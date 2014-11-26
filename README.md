@@ -1,5 +1,9 @@
 Fluent.Ribbon or "Fluent Ribbon Control Suite"
 =============
+[![Build status](https://img.shields.io/appveyor/ci/batzen/fluent-ribbon.svg?style=flat-square)](https://ci.appveyor.com/project/batzen/fluent-ribbon)
+[![Release](https://img.shields.io/github/release/fluentribbon/fluent.ribbon.svg?style=flat-square)](https://github.com/fluentribbon/Fluent.Ribbon/releases/latest)
+[![Issues](https://img.shields.io/github/issues/fluentribbon/fluent.ribbon.svg?style=flat-square)](https://github.com/fluentribbon/Fluent.Ribbon/issues)
+
 
 This project was previously hosted on [CodePlex](https://fluent.codeplex.com/).
 
