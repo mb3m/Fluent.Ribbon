@@ -15,14 +15,14 @@
             <Style BasedOn="{StaticResource ApplicationMenuStyle}"
                    TargetType="{x:Type Fluent:MenuItem}" />
         </ControlTemplate.Resources>
-        <Grid Margin="0,0,0,0">
+        <Grid Margin="0">
             <ContentControl x:Name="buttonContent"
                             Width="{Binding ActualWidth, ElementName=PART_ButtonBorder}"
                             Height="{Binding ActualHeight, ElementName=PART_ButtonBorder}"
-                            Margin="0,0,0,1">
+                            Margin="0">
                 <Border x:Name="PART_ButtonBorder"
                         MinWidth="56"
-                        Height="23"
+                        Height="24"
                         CornerRadius="2,2,0,0"
                         Background="{TemplateBinding Background}">
                     <Border x:Name="border1"
@@ -106,7 +106,7 @@
                 <Grid Name="DropDown"
                       SnapsToDevicePixels="True"
                       Margin="0"
-                      VerticalAlignment="Top">                    
+                      VerticalAlignment="Top">
                     <Border x:Name="PART_DropDownBorder"
                             MinWidth="{TemplateBinding ActualWidth}"
                             SnapsToDevicePixels="True"
