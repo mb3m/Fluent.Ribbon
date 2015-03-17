@@ -8,29 +8,38 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using System.Windows.Threading;
     using Fluent;
     using FluentTest.ViewModels;
     using Button = Fluent.Button;
 
-    /// <summary>
-    /// Interaction logic for TestContent.xaml
-    /// </summary>
     public partial class TestContent
     {
+        private Theme? currentTheme;
+        private readonly MainViewModel viewModel;
+
         public TestContent()
         {
             this.InitializeComponent();
 
-            this.Loaded += this.HandleTestContentLoaded;
-
             //Ribbon.Localization.Culture = new CultureInfo("ru-RU");
+
+            this.HookEvents();
+
+            this.viewModel = new MainViewModel();
+            this.DataContext = this.viewModel;
+        }
+
+        private void HookEvents()
+        {
+            this.Loaded += this.HandleTestContentLoaded;
 
             this.buttonBold.Checked += (s, e) => Debug.WriteLine("Checked");
             this.buttonBold.Unchecked += (s, e) => Debug.WriteLine("Unchecked");
 
-            this.DataContext = new MainViewModel();
+            this.PreviewMouseWheel += OnPreviewMouseWheel;
         }
 
         private static void OnScreenTipHelpPressed(object sender, ScreenTipHelpEventArgs e)
@@ -73,7 +82,7 @@
 
         public Button CreateRibbonButton()
         {
-            var fooCommand1 = new FooCommand1();
+            var fooCommand1 = new TestRoutedCommand();
 
             var button = new Button
             {
@@ -95,8 +104,6 @@
             Office2013,
             Windows8
         }
-
-        private Theme? currentTheme;
 
         private void OnOffice2013Click(object sender, RoutedEventArgs e)
         {
@@ -364,24 +371,47 @@
             w.ShowDialog();
         }
 
+        private void OpenRegularWindow_OnClick(object sender, RoutedEventArgs e)
+        {
+            new RegularWindow().Show();
+        }
+
         private void OpenMahMetroWindow_OnClick(object sender, RoutedEventArgs e)
         {
             new MahMetroWindow().Show();
         }
+
+        private void ZoomSlider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            TextOptions.SetTextFormattingMode(this, e.NewValue > 1.0 ? TextFormattingMode.Ideal : TextFormattingMode.Display);
+        }
+
+        private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) == false
+                && Keyboard.IsKeyDown(Key.RightCtrl) == false)
+            {
+                return;
+            }
+
+            this.zoomSlider.Value += e.Delta > 0 ? 0.1 : -0.1;
+
+            e.Handled = true;
+        }
     }
 
-    public class FooCommand1
+    public class TestRoutedCommand
     {
-        public static RoutedCommand TestPresnterCommand = new RoutedCommand("TestPresnterCommand", typeof(FooCommand1));
+        public static RoutedCommand TestPresenterCommand = new RoutedCommand("TestPresenterCommand", typeof(TestRoutedCommand));
 
         public ICommand ItemCommand
         {
-            get { return TestPresnterCommand; }
+            get { return TestPresenterCommand; }
         }
 
         public CommandBinding ItemCommandBinding
         {
-            get { return new CommandBinding(TestPresnterCommand, this.OnTestCommandExecuted, this.CanExecuteTestCommand); }
+            get { return new CommandBinding(TestPresenterCommand, this.OnTestCommandExecuted, this.CanExecuteTestCommand); }
         }
 
         private void CanExecuteTestCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -391,7 +421,7 @@
 
         private void OnTestCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("Test Module Command");
+            MessageBox.Show("TestPresenterCommand");
         }
     }
 }
